@@ -1,7 +1,15 @@
 import PropTypes from 'prop-types';
 import s from './Filter.module.css';
+import * as actions from '../../redux/actions';
 
-function Filter({ onInputChange, filterValue }) {
+import { connect } from 'react-redux';
+
+function Filter({ setFilter, filterValue }) {
+  const inputChangeHandler = ({ currentTarget }) => {
+    const value = currentTarget.value;
+    setFilter(value);
+  };
+
   return (
     <div className={s.filter}>
       <p className={s.filter__title}>Find contacts by name</p>
@@ -9,7 +17,7 @@ function Filter({ onInputChange, filterValue }) {
         className={s.filter__input}
         type="text"
         name="filter"
-        onChange={onInputChange}
+        onChange={inputChangeHandler}
         value={filterValue}
       />
     </div>
@@ -21,4 +29,16 @@ Filter.propTypes = {
   filterValue: PropTypes.string,
 };
 
-export default Filter;
+const mapStateToProps = ({ filter }) => {
+  return {
+    filter,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setFilter: value => dispatch(actions.changeFilter(value)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import s from './Form.module.css';
+import * as actions from '../../redux/actions';
 
 function Form({ onSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  function onInputChange({ currentTarget }) {
+  const onInputChange = ({ currentTarget }) => {
     const name = currentTarget.name;
     const value = currentTarget.value;
     switch (name) {
@@ -21,7 +23,7 @@ function Form({ onSubmit }) {
       default:
         return;
     }
-  }
+  };
 
   function onFormSubmit(e) {
     e.preventDefault();
@@ -78,4 +80,10 @@ Form.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-export default Form;
+const mapDispatchToProps = dispatch => {
+  return {
+    onSubmit: value => dispatch(actions.submitContact(value)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Form);

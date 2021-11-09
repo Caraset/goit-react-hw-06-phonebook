@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import s from './Contacts.module.css';
 
-function Contacts({ contacts, filteredContacts, removeHandler }) {
+import { connect } from 'react-redux';
+import * as actions from '../../redux/actions';
+
+function Contacts({ contacts, filteredContacts, removeContact }) {
   return (
     <div className={s.contacts}>
       {contacts.length === 0 ? (
@@ -19,7 +22,7 @@ function Contacts({ contacts, filteredContacts, removeHandler }) {
                 <button
                   className={s.contacts__btn}
                   type="button"
-                  onClick={() => removeHandler(contact.id)}
+                  onClick={() => removeContact(contact.id)}
                 >
                   Delete
                 </button>
@@ -38,4 +41,16 @@ Contacts.propTypes = {
   removeHandler: PropTypes.func,
 };
 
-export default Contacts;
+const mapStateToProps = state => {
+  return {
+    contacts: state.contacts,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    removeContact: id => dispatch(actions.deleteContact(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
