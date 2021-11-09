@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -11,8 +10,8 @@ function Form({ onSubmit }) {
   const [number, setNumber] = useState('');
 
   const onInputChange = ({ currentTarget }) => {
-    const name = currentTarget.name;
-    const value = currentTarget.value;
+    const { name, value } = currentTarget;
+
     switch (name) {
       case 'name':
         setName(value);
@@ -31,7 +30,7 @@ function Form({ onSubmit }) {
     const name = e.currentTarget.name.value;
     const number = e.currentTarget.number.value;
 
-    onSubmit({ name, number, id: uuidv4() });
+    onSubmit({ name, number });
 
     reset();
   }

@@ -5,11 +5,6 @@ import * as actions from '../../redux/actions';
 import { connect } from 'react-redux';
 
 function Filter({ setFilter, filterValue }) {
-  const inputChangeHandler = ({ currentTarget }) => {
-    const value = currentTarget.value;
-    setFilter(value);
-  };
-
   return (
     <div className={s.filter}>
       <p className={s.filter__title}>Find contacts by name</p>
@@ -17,7 +12,7 @@ function Filter({ setFilter, filterValue }) {
         className={s.filter__input}
         type="text"
         name="filter"
-        onChange={inputChangeHandler}
+        onChange={setFilter}
         value={filterValue}
       />
     </div>
@@ -37,7 +32,7 @@ const mapStateToProps = ({ filter }) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setFilter: value => dispatch(actions.changeFilter(value)),
+    setFilter: e => dispatch(actions.changeFilter(e.target.value)),
   };
 };
 

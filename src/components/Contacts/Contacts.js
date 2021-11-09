@@ -41,11 +41,20 @@ Contacts.propTypes = {
   removeHandler: PropTypes.func,
 };
 
-const mapStateToProps = state => {
-  return {
-    contacts: state.contacts,
-  };
-};
+function getFilteredContacts(allContacts, filter) {
+  const normalizedFilter = filter.toLowerCase();
+
+  return allContacts.filter(
+    contact =>
+      contact.name.toLowerCase().includes(normalizedFilter) ||
+      contact.number.includes(normalizedFilter),
+  );
+}
+
+const mapStateToProps = ({ contacts, filter }) => ({
+  contacts,
+  filteredContacts: getFilteredContacts(contacts, filter),
+});
 
 const mapDispatchToProps = dispatch => {
   return {
