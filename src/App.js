@@ -1,7 +1,7 @@
+import s from './App.module.css';
 import Form from './components/Form';
 import Filter from './components/Filter';
 import Contacts from './components/Contacts';
-import s from './App.module.css';
 
 function App() {
   return (

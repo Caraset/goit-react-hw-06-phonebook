@@ -1,36 +1,29 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import s from './Form.module.css';
 import * as actions from '../../redux/actions';
 
-function Form({ onSubmit }) {
+export default function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
-  const onInputChange = ({ currentTarget }) => {
-    const { name, value } = currentTarget;
+  const onInputChange = ({ target }) => {
+    const { name, value } = target;
 
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
+    name === 'name' ? setName(value) : setNumber(value);
   };
 
   function onFormSubmit(e) {
     e.preventDefault();
 
-    const name = e.currentTarget.name.value;
-    const number = e.currentTarget.number.value;
+    const contact = {
+      name: e.target.name.value,
+      number: e.target.number.value,
+    };
 
-    onSubmit({ name, number });
+    dispatch(actions.submitContact(contact));
 
     reset();
   }
@@ -74,15 +67,3 @@ function Form({ onSubmit }) {
     </form>
   );
 }
-
-Form.propTypes = {
-  onSubmit: PropTypes.func,
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSubmit: value => dispatch(actions.submitContact(value)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Form);

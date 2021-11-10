@@ -1,10 +1,16 @@
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+
 import s from './Contacts.module.css';
-
-import { connect } from 'react-redux';
 import * as actions from '../../redux/actions';
+import { getContacts, getFilteredContacts } from '../../redux/selectors';
 
-function Contacts({ contacts, filteredContacts, removeContact }) {
+export default function Contacts() {
+  const contacts = useSelector(getContacts);
+  const filteredContacts = useSelector(getFilteredContacts);
+  const dispatch = useDispatch();
+
+  const removeContact = id => dispatch(actions.deleteContact(id));
+
   return (
     <div className={s.contacts}>
       {contacts.length === 0 ? (
@@ -34,32 +40,3 @@ function Contacts({ contacts, filteredContacts, removeContact }) {
     </div>
   );
 }
-
-Contacts.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.object),
-  filteredContacts: PropTypes.arrayOf(PropTypes.object),
-  removeHandler: PropTypes.func,
-};
-
-function getFilteredContacts(allContacts, filter) {
-  const normalizedFilter = filter.toLowerCase();
-
-  return allContacts.filter(
-    contact =>
-      contact.name.toLowerCase().includes(normalizedFilter) ||
-      contact.number.includes(normalizedFilter),
-  );
-}
-
-const mapStateToProps = ({ contacts, filter }) => ({
-  contacts,
-  filteredContacts: getFilteredContacts(contacts, filter),
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    removeContact: id => dispatch(actions.deleteContact(id)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

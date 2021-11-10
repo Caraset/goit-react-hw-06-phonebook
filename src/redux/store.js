@@ -10,7 +10,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import reducers from './reducers';
+import rootReducers from './reducers';
 
 const persistConfig = {
   key: 'contacts',
@@ -19,7 +19,7 @@ const persistConfig = {
 };
 
 export const store = configureStore({
-  reducer: persistReducer(persistConfig, reducers),
+  reducer: persistReducer(persistConfig, rootReducers),
 
   middleware: getDefaultMiddleware => [
     ...getDefaultMiddleware({
