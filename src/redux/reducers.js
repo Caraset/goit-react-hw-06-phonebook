@@ -2,18 +2,8 @@ import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
 import { combineReducers } from '@reduxjs/toolkit';
 
-function addContact(state, { payload }) {
-  const isInContacts = state.find(el => el.name === payload.name);
-
-  if (isInContacts) {
-    alert(`${payload.name} is already in contacts`);
-    return state;
-  }
-  return [...state, payload];
-}
-
 const contacts = createReducer([], {
-  [actions.submitContact]: addContact,
+  [actions.submitContact]: (state, { payload }) => [...state, payload],
   [actions.deleteContact]: (state, { payload }) =>
     state.filter(contact => contact.id !== payload),
 });

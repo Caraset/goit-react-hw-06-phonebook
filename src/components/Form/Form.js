@@ -1,12 +1,14 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import s from './Form.module.css';
 import * as actions from '../../redux/actions';
+import { getContacts } from '../../redux/selectors';
 
 export default function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const onInputChange = ({ target }) => {
@@ -23,7 +25,11 @@ export default function Form() {
       number: e.target.number.value,
     };
 
-    dispatch(actions.submitContact(contact));
+    if (contacts.find(el => el.name === contact.name)) {
+      alert(`${contact.name} is already in contacts`);
+    } else {
+      dispatch(actions.submitContact(contact));
+    }
 
     reset();
   }
