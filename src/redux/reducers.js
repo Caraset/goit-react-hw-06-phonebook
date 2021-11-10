@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
+import { combineReducers } from '@reduxjs/toolkit';
 
 function addContact(state, { payload }) {
   const isInContacts = state.find(el => el.name === payload.name);
@@ -11,12 +12,17 @@ function addContact(state, { payload }) {
   return [...state, payload];
 }
 
-export const contactsReducer = createReducer([], {
+const contacts = createReducer([], {
   [actions.submitContact]: addContact,
   [actions.deleteContact]: (state, { payload }) =>
     state.filter(contact => contact.id !== payload),
 });
 
-export const filterReducer = createReducer('', {
+export const filter = createReducer('', {
   [actions.changeFilter]: (_, { payload }) => payload,
+});
+
+export default combineReducers({
+  contacts,
+  filter,
 });
